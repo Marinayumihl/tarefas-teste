@@ -1,6 +1,12 @@
-# Gerenciador de Tarefas com Testes Unitários
+# Gerenciador de Tarefas com Testes Unitários e CI/CD
 
-Projeto desenvolvido em **Next.js 15 com TypeScript** para praticar a criação de componentes, Server Components, hooks personalizados e testes unitários utilizando Jest e Testing Library.
+Projeto desenvolvido em **Next.js 15 com TypeScript** para praticar a criação de componentes, Server Components, hooks personalizados, testes unitários e automação de CI/CD utilizando GitHub Actions e Vercel.
+
+## Site publicado
+
+A aplicação está disponível em produção:
+
+https://tarefas-teste.vercel.app
 
 ## Funcionalidades
 
@@ -10,6 +16,8 @@ Projeto desenvolvido em **Next.js 15 com TypeScript** para praticar a criação 
 - Contagem automática da quantidade de tarefas
 - Dados simulados utilizando `Promise.resolve()`
 - Testes unitários dos principais fluxos da aplicação
+- Pipeline automatizada de CI/CD
+- Deploy automático na Vercel
 
 ## Tecnologias utilizadas
 
@@ -19,6 +27,8 @@ Projeto desenvolvido em **Next.js 15 com TypeScript** para praticar a criação 
 - Jest
 - Testing Library
 - ESLint
+- GitHub Actions
+- Vercel
 
 ## Estrutura do projeto
 
@@ -40,6 +50,10 @@ tests/
   NovaTarefa.test.tsx
   page.test.tsx
   useContadorDeTarefas.test.ts
+
+.github/
+  workflows/
+    main.yml
 ```
 
 ## Como instalar
@@ -48,6 +62,12 @@ Clone o repositório e instale as dependências:
 
 ```bash
 npm install
+```
+
+Também é possível instalar as dependências utilizando:
+
+```bash
+npm ci
 ```
 
 ## Como executar
@@ -64,17 +84,25 @@ Depois, acesse:
 http://localhost:3000
 ```
 
+## Como executar o lint
+
+Para verificar a qualidade e padronização do código:
+
+```bash
+npm run lint
+```
+
 ## Como executar os testes
 
 Para executar todos os testes unitários:
 
 ```bash
-npm test
+npm run test
 ```
 
 ## Cobertura dos testes
 
-Para gerar o relatório de cobertura dos testes:
+Para gerar o relatório de cobertura:
 
 ```bash
 npm run test:coverage
@@ -114,3 +142,46 @@ Snapshots:   0 total
 ```
 
 Todos os testes foram executados com sucesso.
+
+## Pipeline CI/CD
+
+O projeto utiliza **GitHub Actions** para automatizar a validação, os testes, o build e o deploy da aplicação.
+
+O workflow está localizado em:
+
+```text
+.github/workflows/main.yml
+```
+
+### Integração Contínua (CI)
+
+A pipeline de CI é executada automaticamente em pushes e pull requests direcionados à branch `main`.
+
+São executadas as seguintes etapas:
+
+```bash
+npm ci
+npm run lint
+npm run test
+npm run build
+```
+
+Dessa forma, o código é validado automaticamente antes do deploy.
+
+### Entrega Contínua (CD)
+
+Após a conclusão bem-sucedida do CI em um push para a branch `main`, o GitHub Actions executa automaticamente o deploy da aplicação na **Vercel**.
+
+O deploy utiliza secrets configurados no GitHub para armazenar de forma segura as credenciais necessárias:
+
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+
+O job de deploy depende da conclusão bem-sucedida do job de CI, evitando a publicação caso os testes, o lint ou o build apresentem erros.
+
+## Deploy
+
+A aplicação está hospedada na **Vercel** e pode ser acessada em:
+
+https://tarefas-teste.vercel.app
